@@ -1,0 +1,50 @@
+{
+  "name": "emailcheck",
+  "version": "1.1.0",
+  "description": "Read an IMAP inbox and manage messages from the command line, with JSON output.",
+  "type": "module",
+  "bin": {
+    "emailcheck": "bin/emailcheck.js"
+  },
+  "files": [
+    "bin",
+    "commands",
+    "lib"
+  ],
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "keywords": [
+    "imap",
+    "email",
+    "gmail",
+    "inbox",
+    "cli"
+  ],
+  "author": "Nico Devs <hi@nicodevs.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nicodevs/climail"
+  },
+  "bugs": {
+    "url": "https://github.com/nicodevs/climail/issues"
+  },
+  "homepage": "https://github.com/nicodevs/climail#readme",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.11.0",
+    "imapflow": "^1.4.1",
+    "mailparser": "^3.7.1",
+    "nodemailer": "^6.9.16",
+    "zod": "^4.3.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "eslint": "^9.39.2",
+    "globals": "^17.3.0"
+  }
+}
