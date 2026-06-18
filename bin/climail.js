@@ -26,7 +26,7 @@ const commands = {
 async function main() {
   if (!command || !commands[command]) {
     console.log(`
-Usage: emailcheck <command>
+Usage: climail <command>
 
 Commands:
   init                  Setup wizard for IMAP credentials
@@ -42,14 +42,14 @@ All commands accept --config <path> to point at a specific .env file
 (defaults to .env in the current directory).
 
 Examples:
-  npx emailcheck init
-  npx emailcheck list --unread
-  npx emailcheck read 167 --save-attachments ./att
-  npx emailcheck label 167 Triaged
-  npx emailcheck draft-reply 167 --body "Thanks, will do."
-  npx emailcheck send --to you@example.com --subject "Hi" --body "Hello"
-  npx emailcheck delete 167
-  npx emailcheck move 167 Archive
+  npx climail init
+  npx climail list --unread
+  npx climail read 167 --save-attachments ./att
+  npx climail label 167 Triaged
+  npx climail draft-reply 167 --body "Thanks, will do."
+  npx climail send --to you@example.com --subject "Hi" --body "Hello"
+  npx climail delete 167
+  npx climail move 167 Archive
 `)
     process.exit(command ? 1 : 0)
   }

@@ -6,7 +6,7 @@ function required(value) {
 }
 
 export async function init() {
-  intro('emailcheck setup')
+  intro('climail setup')
 
   const existing = loadConfig()
 
@@ -60,5 +60,5 @@ export async function init() {
   })
 
   log.success('Saved to .env')
-  outro('Done. Try: npx emailcheck list --unread')
+  outro('Done. Try: npx climail list --unread')
 }

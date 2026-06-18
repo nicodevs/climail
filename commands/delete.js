@@ -8,7 +8,7 @@ export async function deleteMessage(argv) {
   const config = loadValidatedConfig(options.config)
   const uid = positionals[0]
 
-  if (!uid) throw new Error('Usage: emailcheck delete <uid>')
+  if (!uid) throw new Error('Usage: climail delete <uid>')
 
   const result = await withClient(config, client => withInbox(client, async () => {
     // On Gmail this moves the message to Trash rather than erasing it outright.

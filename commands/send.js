@@ -13,7 +13,7 @@ export async function send(argv) {
     throw new Error('SMTP is not configured. Add SMTP_HOST (and optional SMTP_PORT) to your .env')
   }
   if (!options.to) {
-    throw new Error('Usage: emailcheck send --to <address> --subject "<subject>" --body "<text>"')
+    throw new Error('Usage: climail send --to <address> --subject "<subject>" --body "<text>"')
   }
 
   const transport = createTransport(config)

@@ -1,11 +1,11 @@
-# emailcheck
+# climail
 
 Read an IMAP inbox and manage messages from the command line. All data commands print JSON to stdout.
 
 ## Usage
 
 ```bash
-npx emailcheck <command>
+npx climail <command>
 ```
 
 ## Commands
@@ -24,16 +24,16 @@ npx emailcheck <command>
 ## Examples
 
 ```bash
-npx emailcheck init
-npx emailcheck list --unread
-npx emailcheck read 167 --save-attachments ./att
-npx emailcheck label 167 Triaged
-npx emailcheck draft-reply 167 --body "Thanks, will take a look."
+npx climail init
+npx climail list --unread
+npx climail read 167 --save-attachments ./att
+npx climail label 167 Triaged
+npx climail draft-reply 167 --body "Thanks, will take a look."
 ```
 
 ## Configuration
 
-Run `npx emailcheck init` to create a `.env` file in the current directory, or write one yourself:
+Run `npx climail init` to create a `.env` file in the current directory, or write one yourself:
 
 ```
 IMAP_HOST=imap.gmail.com
@@ -52,7 +52,7 @@ SMTP authenticates with the same username/password as IMAP.
 Values are read from `.env` in the current directory, falling back to ambient environment variables. Point at a different file with `--config <path>` on any command:
 
 ```bash
-npx emailcheck list --config ~/secrets/mail.env --unread
+npx climail list --config ~/secrets/mail.env --unread
 ```
 
 > Gmail requires an **app password**, not your account password. The `.env` file is gitignored — keep it out of version control.

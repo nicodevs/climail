@@ -38,7 +38,7 @@ export async function read(argv) {
   const uid = positionals[0]
   const saveDir = options['save-attachments'] ?? null
 
-  if (!uid) throw new Error('Usage: emailcheck read <uid> [--save-attachments <dir>]')
+  if (!uid) throw new Error('Usage: climail read <uid> [--save-attachments <dir>]')
 
   const result = await withClient(config, client => withInbox(client, async () => {
     const message = await client.fetchOne(String(uid), { source: true }, { uid: true })

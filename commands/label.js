@@ -9,7 +9,7 @@ export async function label(argv) {
   const uid = positionals[0]
   const name = positionals[1]
 
-  if (!uid || !name) throw new Error('Usage: emailcheck label <uid> <name>')
+  if (!uid || !name) throw new Error('Usage: climail label <uid> <name>')
 
   const result = await withClient(config, client => withInbox(client, async () => {
     // A Gmail label is a mailbox; copying the message into it adds the label

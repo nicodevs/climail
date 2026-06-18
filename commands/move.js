@@ -9,7 +9,7 @@ export async function move(argv) {
   const uid = positionals[0]
   const destination = positionals[1]
 
-  if (!uid || !destination) throw new Error('Usage: emailcheck move <uid> <mailbox>')
+  if (!uid || !destination) throw new Error('Usage: climail move <uid> <mailbox>')
 
   const result = await withClient(config, client => withInbox(client, async () => {
     // The destination must exist before a move; create it if it's new.

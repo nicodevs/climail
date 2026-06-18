@@ -40,7 +40,7 @@ export async function draftReply(argv) {
   const uid = positionals[0]
   const body = options.body ?? ''
 
-  if (!uid) throw new Error('Usage: emailcheck draft-reply <uid> --body "<text>"')
+  if (!uid) throw new Error('Usage: climail draft-reply <uid> --body "<text>"')
 
   const result = await withClient(config, async client => {
     // Pull the original from the Inbox so we can thread the reply correctly.
