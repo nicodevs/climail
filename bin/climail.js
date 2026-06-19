@@ -54,7 +54,7 @@ Commands:
                         Extras: [--cc a,b] [--bcc a,b] [--html "<p>..."] [--attach f1,f2]
   forward <uid>         Forward a message --to <addr> [--body "<note>"] (keeps attachments)
   archive <uid>         Archive a message (Gmail: drops the Inbox label, keeps it)
-  delete <uid>          Delete a message (Gmail: moves to Trash)
+  delete <uid>          Delete a message [--from <mailbox>] (Gmail: moves to Trash)
   move <uid> <mailbox>  Move a message to another mailbox
 
 All commands accept --config <path> to point at a specific .env file

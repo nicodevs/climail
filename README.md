@@ -22,7 +22,7 @@ npx climail <command>
 | `draft-reply <uid>` | Stage a threaded reply to a message in the Drafts folder. Flags: `--body "<text>"`, `--all` (reply to everyone — sender in To, other recipients in Cc). **Drafts only — nothing is sent** (IMAP cannot send; that needs SMTP). Review and send from your mail client. |
 | `send` | Send mail over SMTP (requires `SMTP_HOST`). Three modes: a new email (`--to`, `--subject`, `--body`); a threaded reply (`--to`, `--reply-to <uid>`, `--body` — carries `In-Reply-To`/`References`, add `--all` for reply-all); or an existing draft (`--draft <uid>`, which sends it and removes it from Drafts). Extras for new/reply: `--cc a,b`, `--bcc a,b`, `--html "<p>…"`, `--attach file1,file2`. |
 | `forward <uid>` | Forward a message to a new recipient over SMTP. Flags: `--to <address>` (required), `--body "<note>"`. Keeps the original's attachments. |
-| `delete <uid>` | Delete a message. On Gmail this moves it to Trash. |
+| `delete <uid>` | Delete a message. On Gmail this moves it to Trash. Flag: `--from <mailbox>` deletes from a mailbox other than the Inbox (e.g. `Drafts`, `[Gmail]/All Mail`). |
 | `archive <uid>` | Archive a message. On Gmail this drops the Inbox label (keeping it in All Mail) rather than trashing it; on other servers it moves to the Archive folder. |
 | `move <uid> <mailbox>` | Move a message from the Inbox to another mailbox. |
 
