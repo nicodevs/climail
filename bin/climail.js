@@ -9,6 +9,7 @@ import { label } from '../commands/label.js'
 import { mark } from '../commands/mark.js'
 import { draftReply } from '../commands/draft-reply.js'
 import { send } from '../commands/send.js'
+import { archive } from '../commands/archive.js'
 import { deleteMessage } from '../commands/delete.js'
 import { move } from '../commands/move.js'
 
@@ -25,6 +26,7 @@ const commands = {
   mark: () => mark(args),
   'draft-reply': () => draftReply(args),
   send: () => send(args),
+  archive: () => archive(args),
   delete: () => deleteMessage(args),
   move: () => move(args)
 }
@@ -47,6 +49,7 @@ Commands:
   send                  Send mail (SMTP). New:   --to <addr> [--subject] [--body]
                         Reply:  --to <addr> --reply-to <uid> [--body]
                         Draft:  --draft <uid> (send an existing draft, then remove it)
+  archive <uid>         Archive a message (Gmail: drops the Inbox label, keeps it)
   delete <uid>          Delete a message (Gmail: moves to Trash)
   move <uid> <mailbox>  Move a message to another mailbox
 
