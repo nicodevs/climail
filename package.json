@@ -1,6 +1,6 @@
 {
   "name": "climail",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Read an IMAP inbox and manage messages from the command line, with JSON output.",
   "type": "module",
   "bin": {
@@ -26,7 +26,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nicodevs/climail"
+    "url": "git+https://github.com/nicodevs/climail.git"
   },
   "bugs": {
     "url": "https://github.com/nicodevs/climail/issues"
