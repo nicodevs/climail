@@ -5,6 +5,7 @@ import { list } from '../commands/list.js'
 import { search } from '../commands/search.js'
 import { read } from '../commands/read.js'
 import { label } from '../commands/label.js'
+import { mark } from '../commands/mark.js'
 import { draftReply } from '../commands/draft-reply.js'
 import { send } from '../commands/send.js'
 import { deleteMessage } from '../commands/delete.js'
@@ -19,6 +20,7 @@ const commands = {
   search: () => search(args),
   read: () => read(args),
   label: () => label(args),
+  mark: () => mark(args),
   'draft-reply': () => draftReply(args),
   send: () => send(args),
   delete: () => deleteMessage(args),
@@ -37,6 +39,7 @@ Commands:
                         [--text] [--since <date>] [--before <date>] [--unread] [--count N]
   read <uid>            Fetch one message: body + attachments [--save-attachments <dir>]
   label <uid> <name>    Apply a Gmail label to a message
+  mark <uid> <action>   Set flags: read | unread | flag | unflag | star | unstar
   draft-reply <uid>     Stage a threaded reply in Drafts [--body "<text>"]
   send                  Send mail (SMTP). New:   --to <addr> [--subject] [--body]
                         Reply:  --to <addr> --reply-to <uid> [--body]
