@@ -2,6 +2,12 @@
 
 Read an IMAP inbox and manage messages from the command line. All data commands print JSON to stdout.
 
+## Why climail
+
+- **Zero install.** `npx climail` and you're live. No binary to compile, no daemon to run, no global install.
+- **JSON-first, automation-friendly.** Every data command emits clean JSON on stdout, so it drops straight into scripts, pipelines, and agent workflows without scraping terminal output.
+- **Gmail-native ergonomics.** Labels, archive (drops the Inbox label instead of trashing), and stars (`\Flagged`) work out of the box, with no per-provider config blocks to hand-roll.
+
 ## Usage
 
 ```bash
