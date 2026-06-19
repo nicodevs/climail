@@ -17,7 +17,7 @@ npx climail <command>
 | `read <uid>` | Fetch one message by UID — parsed body (text + html) and attachment metadata. Flag: `--save-attachments <dir>` writes attachments to disk and returns their paths. |
 | `label <uid> <name>` | Apply a Gmail label to a message. Gmail labels are mailboxes, so the message is copied into the label (it stays in the Inbox). Creates the label if needed. |
 | `draft-reply <uid>` | Stage a threaded reply to a message in the Drafts folder. Flag: `--body "<text>"`. **Drafts only — nothing is sent** (IMAP cannot send; that needs SMTP). Review and send from your mail client. |
-| `send` | Send a new email over SMTP. Flags: `--to <address>` (required), `--subject "<s>"`, `--body "<text>"`. Requires `SMTP_HOST` in config. |
+| `send` | Send mail over SMTP (requires `SMTP_HOST`). Three modes: a new email (`--to`, `--subject`, `--body`); a threaded reply (`--to`, `--reply-to <uid>`, `--body` — carries `In-Reply-To`/`References`); or an existing draft (`--draft <uid>`, which sends it and removes it from Drafts). |
 | `delete <uid>` | Delete a message. On Gmail this moves it to Trash. |
 | `move <uid> <mailbox>` | Move a message from the Inbox to another mailbox. |
 

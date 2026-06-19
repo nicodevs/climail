@@ -1,10 +1,84 @@
+import { simpleParser } from 'mailparser'
 import { loadValidatedConfig } from '../lib/config.js'
 import { createTransport } from '../lib/smtp.js'
+import { withClient, withInbox, withMailbox, findDraftsMailbox } from '../lib/imap.js'
+import { replySubject, replyMeta } from '../lib/reply.js'
 import { parseArgs } from '../lib/args.js'
+
+// Send an existing draft as-is (its threading headers are preserved), then
+// remove it from the Drafts mailbox.
+async function sendDraft(config, transport, uid) {
+  return withClient(config, async client => {
+    const drafts = await findDraftsMailbox(client)
+
+    const { raw, parsed } = await withMailbox(client, drafts, async () => {
+      const message = await client.fetchOne(String(uid), { source: true }, { uid: true })
+      if (!message || !message.source) throw new Error(`No draft with UID ${uid} in ${drafts}`)
+      return { raw: message.source, parsed: await simpleParser(message.source) }
+    })
+
+    const to = parsed.to?.value?.map(value => value.address).filter(Boolean) ?? []
+    const info = await transport.sendMail({ envelope: { from: config.imap.username, to }, raw })
+
+    await withMailbox(client, drafts, () => client.messageDelete(String(uid), { uid: true }))
+
+    return {
+      ok: true,
+      sent: 'draft',
+      draftUid: Number(uid),
+      to,
+      subject: parsed.subject ?? null,
+      messageId: info.messageId,
+      accepted: info.accepted,
+      rejected: info.rejected,
+      draftDeleted: true
+    }
+  })
+}
+
+// Compose and send a new message. With --reply-to, thread it under an Inbox
+// message by carrying its In-Reply-To / References headers.
+async function sendCompose(config, transport, options) {
+  if (!options.to) {
+    throw new Error('Usage: climail send --to <address> [--subject] [--body] [--reply-to <uid>]  |  --draft <uid>')
+  }
+
+  let meta = {}
+  let subject = options.subject ?? ''
+
+  if (options['reply-to']) {
+    const original = await withClient(config, client => withInbox(client, async () => {
+      const message = await client.fetchOne(String(options['reply-to']), { source: true }, { uid: true })
+      if (!message || !message.source) throw new Error(`No message with UID ${options['reply-to']} in INBOX`)
+      return simpleParser(message.source)
+    }))
+    meta = replyMeta(original)
+    if (!options.subject) subject = replySubject(original.subject)
+  }
+
+  const info = await transport.sendMail({
+    from: config.imap.username,
+    to: options.to,
+    subject,
+    text: options.body ?? '',
+    inReplyTo: meta.inReplyTo,
+    references: meta.references
+  })
+
+  return {
+    ok: true,
+    sent: options['reply-to'] ? 'reply' : 'compose',
+    to: options.to,
+    subject,
+    messageId: info.messageId,
+    accepted: info.accepted,
+    rejected: info.rejected
+  }
+}
 
 export async function send(argv) {
   const { options } = parseArgs(argv, {
-    flags: ['--to', '--subject', '--body', '--config']
+    flags: ['--to', '--subject', '--body', '--reply-to', '--draft', '--config']
   })
 
   const config = loadValidatedConfig(options.config)
@@ -12,22 +86,11 @@ export async function send(argv) {
   if (!config.smtp.host) {
     throw new Error('SMTP is not configured. Add SMTP_HOST (and optional SMTP_PORT) to your .env')
   }
-  if (!options.to) {
-    throw new Error('Usage: climail send --to <address> --subject "<subject>" --body "<text>"')
-  }
 
   const transport = createTransport(config)
-  const info = await transport.sendMail({
-    from: config.imap.username,
-    to: options.to,
-    subject: options.subject ?? '',
-    text: options.body ?? ''
-  })
+  const result = options.draft
+    ? await sendDraft(config, transport, options.draft)
+    : await sendCompose(config, transport, options)
 
-  console.log(JSON.stringify({
-    ok: true,
-    messageId: info.messageId,
-    accepted: info.accepted,
-    rejected: info.rejected
-  }, null, 2))
+  console.log(JSON.stringify(result, null, 2))
 }

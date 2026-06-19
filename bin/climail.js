@@ -34,7 +34,9 @@ Commands:
   read <uid>            Fetch one message: body + attachments [--save-attachments <dir>]
   label <uid> <name>    Apply a Gmail label to a message
   draft-reply <uid>     Stage a threaded reply in Drafts [--body "<text>"]
-  send                  Send a new email --to <addr> [--subject] [--body] (SMTP)
+  send                  Send mail (SMTP). New:   --to <addr> [--subject] [--body]
+                        Reply:  --to <addr> --reply-to <uid> [--body]
+                        Draft:  --draft <uid> (send an existing draft, then remove it)
   delete <uid>          Delete a message (Gmail: moves to Trash)
   move <uid> <mailbox>  Move a message to another mailbox
 
@@ -48,6 +50,8 @@ Examples:
   npx climail label 167 Triaged
   npx climail draft-reply 167 --body "Thanks, will do."
   npx climail send --to you@example.com --subject "Hi" --body "Hello"
+  npx climail send --to them@example.com --reply-to 167 --body "On it."
+  npx climail send --draft 3
   npx climail delete 167
   npx climail move 167 Archive
 `)

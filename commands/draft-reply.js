@@ -1,18 +1,9 @@
 import MailComposer from 'nodemailer/lib/mail-composer/index.js'
 import { simpleParser } from 'mailparser'
 import { loadValidatedConfig } from '../lib/config.js'
-import { withClient, withInbox } from '../lib/imap.js'
+import { withClient, withInbox, findDraftsMailbox } from '../lib/imap.js'
+import { replySubject, replyMeta } from '../lib/reply.js'
 import { parseArgs } from '../lib/args.js'
-
-function toArray(value) {
-  if (!value) return []
-  return Array.isArray(value) ? value : [value]
-}
-
-function replySubject(subject) {
-  const original = subject ?? ''
-  return /^re:/i.test(original) ? original : `Re: ${original}`.trim()
-}
 
 // Render a reply as a raw RFC822 message (Buffer) via nodemailer's composer.
 function buildMime(mail) {
@@ -22,13 +13,6 @@ function buildMime(mail) {
       else resolve(message)
     })
   })
-}
-
-// Locate the Drafts mailbox by its special-use flag, falling back to "Drafts".
-async function findDraftsMailbox(client) {
-  const boxes = await client.list()
-  const drafts = boxes.find(box => box.specialUse === '\\Drafts')
-  return drafts?.path ?? 'Drafts'
 }
 
 export async function draftReply(argv) {
@@ -53,15 +37,9 @@ export async function draftReply(argv) {
     const to = original.replyTo?.value?.[0]?.address ?? original.from?.value?.[0]?.address
     if (!to) throw new Error(`Could not determine a reply address for UID ${uid}`)
 
-    const references = [...toArray(original.references), original.messageId].filter(Boolean)
-    const raw = await buildMime({
-      from: config.imap.username,
-      to,
-      subject: replySubject(original.subject),
-      inReplyTo: original.messageId,
-      references,
-      text: body
-    })
+    const subject = replySubject(original.subject)
+    const { inReplyTo, references } = replyMeta(original)
+    const raw = await buildMime({ from: config.imap.username, to, subject, inReplyTo, references, text: body })
 
     // APPEND stages the message in Drafts. No SMTP — nothing is sent.
     const mailbox = await findDraftsMailbox(client)
@@ -72,7 +50,7 @@ export async function draftReply(argv) {
       draft: { mailbox, uid: appended?.uid ?? null },
       inReplyToUid: Number(uid),
       to,
-      subject: replySubject(original.subject)
+      subject
     }
   })
 
