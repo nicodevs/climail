@@ -1,9 +1,22 @@
+import { basename } from 'path'
 import { simpleParser } from 'mailparser'
 import { loadValidatedConfig } from '../lib/config.js'
 import { createTransport } from '../lib/smtp.js'
 import { withClient, withInbox, withMailbox, findDraftsMailbox } from '../lib/imap.js'
 import { replySubject, replyMeta } from '../lib/reply.js'
 import { parseArgs } from '../lib/args.js'
+
+// Split a comma-separated flag value into a trimmed, non-empty list.
+function splitList(value) {
+  if (!value) return []
+  return value.split(',').map(item => item.trim()).filter(Boolean)
+}
+
+// --attach takes one or more comma-separated file paths; nodemailer reads each
+// from disk and uses the file's base name as the attachment filename.
+function buildAttachments(value) {
+  return splitList(value).map(path => ({ filename: basename(path), path }))
+}
 
 // Send an existing draft as-is (its threading headers are preserved), then
 // remove it from the Drafts mailbox.
@@ -56,11 +69,19 @@ async function sendCompose(config, transport, options) {
     if (!options.subject) subject = replySubject(original.subject)
   }
 
+  const cc = splitList(options.cc)
+  const bcc = splitList(options.bcc)
+  const attachments = buildAttachments(options.attach)
+
   const info = await transport.sendMail({
     from: config.imap.username,
     to: options.to,
+    cc: cc.length ? cc : undefined,
+    bcc: bcc.length ? bcc : undefined,
     subject,
     text: options.body ?? '',
+    html: options.html || undefined,
+    attachments: attachments.length ? attachments : undefined,
     inReplyTo: meta.inReplyTo,
     references: meta.references
   })
@@ -69,7 +90,10 @@ async function sendCompose(config, transport, options) {
     ok: true,
     sent: options['reply-to'] ? 'reply' : 'compose',
     to: options.to,
+    cc,
+    bcc,
     subject,
+    attachments: attachments.map(attachment => attachment.filename),
     messageId: info.messageId,
     accepted: info.accepted,
     rejected: info.rejected
@@ -78,7 +102,7 @@ async function sendCompose(config, transport, options) {
 
 export async function send(argv) {
   const { options } = parseArgs(argv, {
-    flags: ['--to', '--subject', '--body', '--reply-to', '--draft', '--config']
+    flags: ['--to', '--cc', '--bcc', '--subject', '--body', '--html', '--attach', '--reply-to', '--draft', '--config']
   })
 
   const config = loadValidatedConfig(options.config)

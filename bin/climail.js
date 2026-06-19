@@ -49,6 +49,7 @@ Commands:
   send                  Send mail (SMTP). New:   --to <addr> [--subject] [--body]
                         Reply:  --to <addr> --reply-to <uid> [--body]
                         Draft:  --draft <uid> (send an existing draft, then remove it)
+                        Extras: [--cc a,b] [--bcc a,b] [--html "<p>..."] [--attach f1,f2]
   archive <uid>         Archive a message (Gmail: drops the Inbox label, keeps it)
   delete <uid>          Delete a message (Gmail: moves to Trash)
   move <uid> <mailbox>  Move a message to another mailbox
