@@ -47,9 +47,9 @@ Commands:
   read <uid>            Fetch one message: body + attachments [--save-attachments <dir>]
   label <uid> <name>    Apply a Gmail label to a message
   mark <uid> <action>   Set flags: read | unread | flag | unflag | star | unstar
-  draft-reply <uid>     Stage a threaded reply in Drafts [--body "<text>"]
+  draft-reply <uid>     Stage a threaded reply in Drafts [--all] [--body "<text>"]
   send                  Send mail (SMTP). New:   --to <addr> [--subject] [--body]
-                        Reply:  --to <addr> --reply-to <uid> [--body]
+                        Reply:  --to <addr> --reply-to <uid> [--all] [--body]
                         Draft:  --draft <uid> (send an existing draft, then remove it)
                         Extras: [--cc a,b] [--bcc a,b] [--html "<p>..."] [--attach f1,f2]
   forward <uid>         Forward a message --to <addr> [--body "<note>"] (keeps attachments)

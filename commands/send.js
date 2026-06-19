@@ -3,7 +3,7 @@ import { simpleParser } from 'mailparser'
 import { loadValidatedConfig } from '../lib/config.js'
 import { createTransport } from '../lib/smtp.js'
 import { withClient, withInbox, withMailbox, findDraftsMailbox } from '../lib/imap.js'
-import { replySubject, replyMeta } from '../lib/reply.js'
+import { replySubject, replyMeta, replyAllRecipients } from '../lib/reply.js'
 import { parseArgs } from '../lib/args.js'
 
 // Split a comma-separated flag value into a trimmed, non-empty list.
@@ -52,12 +52,10 @@ async function sendDraft(config, transport, uid) {
 // Compose and send a new message. With --reply-to, thread it under an Inbox
 // message by carrying its In-Reply-To / References headers.
 async function sendCompose(config, transport, options) {
-  if (!options.to) {
-    throw new Error('Usage: climail send --to <address> [--subject] [--body] [--reply-to <uid>]  |  --draft <uid>')
-  }
-
   let meta = {}
   let subject = options.subject ?? ''
+  let to = options.to
+  let cc = splitList(options.cc)
 
   if (options['reply-to']) {
     const original = await withClient(config, client => withInbox(client, async () => {
@@ -67,15 +65,25 @@ async function sendCompose(config, transport, options) {
     }))
     meta = replyMeta(original)
     if (!options.subject) subject = replySubject(original.subject)
+    // --all derives the recipient set from the original (To = sender, Cc =
+    // everyone else). An explicit --to/--cc still wins / adds on top.
+    if (options.all) {
+      const recipients = replyAllRecipients(original, config.imap.username)
+      to = to ?? recipients.to
+      cc = [...new Set([...cc, ...recipients.cc])]
+    }
   }
 
-  const cc = splitList(options.cc)
+  if (!to) {
+    throw new Error('Usage: climail send --to <address> [--subject] [--body] [--reply-to <uid>] [--all]  |  --draft <uid>')
+  }
+
   const bcc = splitList(options.bcc)
   const attachments = buildAttachments(options.attach)
 
   const info = await transport.sendMail({
     from: config.imap.username,
-    to: options.to,
+    to,
     cc: cc.length ? cc : undefined,
     bcc: bcc.length ? bcc : undefined,
     subject,
@@ -89,7 +97,7 @@ async function sendCompose(config, transport, options) {
   return {
     ok: true,
     sent: options['reply-to'] ? 'reply' : 'compose',
-    to: options.to,
+    to,
     cc,
     bcc,
     subject,
@@ -102,7 +110,8 @@ async function sendCompose(config, transport, options) {
 
 export async function send(argv) {
   const { options } = parseArgs(argv, {
-    flags: ['--to', '--cc', '--bcc', '--subject', '--body', '--html', '--attach', '--reply-to', '--draft', '--config']
+    flags: ['--to', '--cc', '--bcc', '--subject', '--body', '--html', '--attach', '--reply-to', '--draft', '--config'],
+    booleans: ['--all']
   })
 
   const config = loadValidatedConfig(options.config)
