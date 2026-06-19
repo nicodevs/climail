@@ -3,7 +3,7 @@
 import { init } from '../commands/init.js'
 import { list } from '../commands/list.js'
 import { search } from '../commands/search.js'
-import { mailboxes } from '../commands/mailboxes.js'
+import { labels } from '../commands/labels.js'
 import { read } from '../commands/read.js'
 import { label } from '../commands/label.js'
 import { mark } from '../commands/mark.js'
@@ -21,7 +21,7 @@ const commands = {
   init,
   list: () => list(args),
   search: () => search(args),
-  mailboxes: () => mailboxes(args),
+  labels: () => labels(args),
   read: () => read(args),
   label: () => label(args),
   mark: () => mark(args),
@@ -43,7 +43,7 @@ Commands:
   list                  List recent messages as JSON [--count N] [--unread]
   search                Search the inbox [--from] [--to] [--subject] [--body]
                         [--text] [--since <date>] [--before <date>] [--unread] [--count N]
-  mailboxes             List folders/labels [--counts adds message + unread totals]
+  labels                List labels/folders [--counts adds message + unread totals]
   read <uid>            Fetch one message: body + attachments [--save-attachments <dir>]
   label <uid> <name>    Apply a Gmail label to a message
   mark <uid> <action>   Set flags: read | unread | flag | unflag | star | unstar

@@ -2,7 +2,7 @@ import { loadValidatedConfig } from '../lib/config.js'
 import { withClient } from '../lib/imap.js'
 import { parseArgs } from '../lib/args.js'
 
-export async function mailboxes(argv) {
+export async function labels(argv) {
   const { options } = parseArgs(argv, { flags: ['--config'], booleans: ['--counts'] })
 
   const config = loadValidatedConfig(options.config)
@@ -19,7 +19,7 @@ export async function mailboxes(argv) {
         specialUse: box.specialUse ?? null,
         subscribed: box.subscribed ?? null
       }
-      // --counts adds a STATUS round trip per mailbox (total + unread).
+      // --counts adds a STATUS round trip per label (total + unread).
       if (withCounts) {
         const status = await client.status(box.path, { messages: true, unseen: true })
         entry.messages = status.messages ?? null
@@ -28,7 +28,7 @@ export async function mailboxes(argv) {
       list.push(entry)
     }
 
-    return { ok: true, count: list.length, mailboxes: list }
+    return { ok: true, count: list.length, labels: list }
   })
 
   console.log(JSON.stringify(result, null, 2))
