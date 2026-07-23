@@ -30,6 +30,7 @@
     "lint": "vp lint",
     "format": "vp fmt",
     "test": "vp test run",
+    "test:e2e": "vp pack && vp test run -c tests/e2e/vitest.config.ts",
     "type-check": "tsc --noEmit",
     "build": "vp run type-check && vp pack",
     "prepare": "vp config --no-agent",

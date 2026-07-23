@@ -1,6 +1,8 @@
-import { defineConfig } from 'vite-plus'
+import { defineConfig, defaultExclude } from 'vite-plus'
 
 export default defineConfig({
+  // Live e2e tests run only via `npm run test:e2e` (tests/e2e/vitest.config.ts).
+  test: { exclude: [...defaultExclude, 'tests/e2e/**'] },
   fmt: {
     semi: false,
     singleQuote: true,

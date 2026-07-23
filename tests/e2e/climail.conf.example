@@ -1,0 +1,14 @@
+# Copy to climail.conf (gitignored) to enable the live e2e suite: npm run test:e2e
+# The tests send uniquely-tagged messages to imap.username and exercise every
+# command against them (read, mark, label, draft-reply, forward, move, archive),
+# then trash everything they created — including the test label/folder. Point this
+# at a mailbox you're happy to send yourself test mail in.
+# For Gmail, imap.password is an app password (not your account password).
+imap.host=imap.gmail.com
+imap.port=993
+imap.secure=true
+imap.username=you@gmail.com
+imap.password=your-app-password
+smtp.host=smtp.gmail.com
+smtp.port=465
+smtp.secure=true
