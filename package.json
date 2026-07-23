@@ -1,6 +1,6 @@
 {
   "name": "climail",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Read an IMAP inbox and manage messages from the command line, with JSON output.",
   "keywords": [
     "cli",
