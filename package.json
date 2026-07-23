@@ -1,0 +1,64 @@
+{
+  "name": "climail",
+  "version": "2.0.0",
+  "description": "Read an IMAP inbox and manage messages from the command line, with JSON output.",
+  "keywords": [
+    "cli",
+    "email",
+    "gmail",
+    "imap",
+    "inbox"
+  ],
+  "homepage": "https://github.com/nicodevs/climail#readme",
+  "bugs": {
+    "url": "https://github.com/nicodevs/climail/issues"
+  },
+  "license": "MIT",
+  "author": "Nico Devs <hi@nicodevs.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicodevs/climail.git"
+  },
+  "bin": {
+    "climail": "dist/climail.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "scripts": {
+    "lint": "vp lint",
+    "format": "vp fmt",
+    "test": "vp test run",
+    "type-check": "tsc --noEmit",
+    "build": "vp run type-check && vp pack",
+    "prepare": "vp config --no-agent",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.11.0",
+    "citty": "^0.2.2",
+    "imapflow": "^1.4.1",
+    "mailparser": "^3.7.1",
+    "nodemailer": "^6.9.16",
+    "rc9": "^3.0.1",
+    "zod": "^4.3.4"
+  },
+  "devDependencies": {
+    "@types/mailparser": "^3.4.6",
+    "@types/node": "^26.1.1",
+    "@types/nodemailer": "^8.0.1",
+    "typescript": "^6.0.3",
+    "vite-plus": "^0.2.4"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "npm",
+      "version": "11.18.0",
+      "onFail": "warn"
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
