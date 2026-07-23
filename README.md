@@ -11,7 +11,7 @@ Built for clankers 🤖 (and humans, too!)
 
 ---
 
-[![climail — give your agent an inbox](docs/poster.png)](https://github.com/user-attachments/assets/646fd5e5-77b9-4260-b263-2876f58991dd)
+[![climail — give your agent an inbox](docs/poster.png)](https://github.com/user-attachments/assets/192c5f2f-4456-49e3-9851-2b9b5c797a44)
 
 ## ✅ Features
 
