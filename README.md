@@ -21,7 +21,7 @@ Built for clankers 🤖 (and humans, too!)
 
 ### Easy to configure
 
-Run `npx climail init` and the wizard will guide you to setup your email credentials. The file is stored in `~/.config/climail.conf`. See [configuration](#configuration) below.
+Run `npx climail init` and the wizard will guide you to setup your email credentials. The file is stored in `~/.config/climail.conf`. See [configuration](#%EF%B8%8F-configuration) below.
 
 ### JSON responses
 
