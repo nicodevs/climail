@@ -111,6 +111,16 @@ npx climail list --config ~/work/mail.conf --unread
 > Gmail requires an **app password**, not your account password. Keep your config
 > file out of version control — it holds your credentials.
 
+## 🤖 Skill for your agent
+
+Teach your agent (Claude Code, Codex, Copilot, Cursor) how to use climail. Install the skill:
+
+```bash
+npx skills add nicodevs/climail
+```
+
+See [`skills/`](./skills/) for manual install and details.
+
 ## ▶️ Requirements
 
 Requires Node >= 22.
