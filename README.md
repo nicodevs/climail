@@ -4,7 +4,7 @@
 
 - 📬 Read, write & organize emails
 - ⚡ Run instantly with `npx` (no install)
-- 🔐 IMAP + SMTP
+- 🔐 IMAP + SMTP, with sending opt-in
 - 💌 Gmail ready
 
 Built for clankers 🤖 (and humans, too!)
@@ -13,9 +13,32 @@ Built for clankers 🤖 (and humans, too!)
 
 [![climail — give your agent an inbox](docs/poster.png)](https://github.com/user-attachments/assets/192c5f2f-4456-49e3-9851-2b9b5c797a44)
 
+## 🔒 Reading and sending are separate
+
+Email is untrusted input. Every message in your inbox was written by someone
+else, so an agent reading your mail is reading text a stranger controls.
+
+climail splits the two capabilities so you can hand over the tedious half
+without handing over your outbox:
+
+- **Read and organize** needs only the IMAP block: `list`, `search`, `read`,
+  `labels`, `label`, `mark`, `archive`, `move`. `draft-reply` writes a proper
+  threaded reply into your **Drafts** and nothing leaves your account.
+- **Send** needs an `smtp.host` you add on purpose. `npx climail init` leaves it
+  empty unless you type one, so `send` and `forward` — the only commands that put
+  mail on the wire under your name — stay locked until you opt in.
+
+So an agent can triage your inbox all day and still have no way to email anyone.
+
+This is a limit on what the tool can do, not a claim that your agent is safe:
+with IMAP alone it can still label, archive, move and delete. Those are all
+recoverable on Gmail (`archive` drops the Inbox label and keeps the message in
+All Mail, `delete` moves it to Trash), but point climail at a mailbox you'd mind
+losing and you should think about it first.
+
 ## ✅ Features
 
-### NPX commad, zero install
+### NPX command, zero install
 
 `npx climail` it's all you need: `npx climail search`, `npx climail mark 167 read`, `npx climail archive 167`, etc.
 
