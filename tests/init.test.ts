@@ -55,6 +55,46 @@ describe('init', () => {
     )
   })
 
+  it('does not pre-fill the SMTP host, so pressing enter skips sending', async () => {
+    vi.mocked(text)
+      .mockResolvedValueOnce('imap.gmail.com')
+      .mockResolvedValueOnce('993')
+      .mockResolvedValueOnce('me@gmail.com')
+      .mockResolvedValueOnce('')
+    vi.mocked(password).mockResolvedValue('app-pw')
+
+    await invoke(init, [])
+
+    const smtpPrompt = vi.mocked(text).mock.calls[3][0]
+
+    expect(smtpPrompt.initialValue).toBe('')
+    expect(smtpPrompt.placeholder).toBe('smtp.gmail.com')
+  })
+
+  it('keeps an existing SMTP host when re-running', async () => {
+    vi.mocked(loadConfig).mockReturnValue({
+      imap: {
+        host: 'imap.gmail.com',
+        port: 993,
+        secure: true,
+        username: 'me@gmail.com',
+        password: 'app-pw',
+      },
+      smtp: { host: 'smtp.fastmail.com', port: 465, secure: true, username: null, password: null },
+    })
+    vi.mocked(text)
+      .mockResolvedValueOnce('imap.gmail.com')
+      .mockResolvedValueOnce('993')
+      .mockResolvedValueOnce('me@gmail.com')
+      .mockResolvedValueOnce('smtp.fastmail.com')
+      .mockResolvedValueOnce('465')
+    vi.mocked(password).mockResolvedValue('app-pw')
+
+    await invoke(init, [])
+
+    expect(vi.mocked(text).mock.calls[3][0].initialValue).toBe('smtp.fastmail.com')
+  })
+
   it('defaults SMTP off when the host is left blank', async () => {
     vi.mocked(text)
       .mockResolvedValueOnce('imap.gmail.com')

@@ -71,9 +71,12 @@ async function runInit(configPath?: string) {
     return cancel('Setup cancelled')
   }
 
+  // Empty by default so pressing enter skips sending. Keep an existing host
+  // when re-running, and show the Gmail one as a hint rather than a value.
   const smtpHost = await text({
     message: 'SMTP host for sending (leave blank to skip)',
-    initialValue: existing?.smtp.host ?? 'smtp.gmail.com',
+    initialValue: existing?.smtp.host ?? '',
+    placeholder: 'smtp.gmail.com',
   })
   if (isCancel(smtpHost)) {
     return cancel('Setup cancelled')
