@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vite-plus/test'
 import nodemailer from 'nodemailer'
 import { createTransport } from '../lib/smtp.js'
 import { CONFIG, CONFIG_NO_SMTP } from './support.js'

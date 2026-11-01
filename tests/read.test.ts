@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { mkdir, writeFile } from 'fs/promises'
 import { simpleParser } from 'mailparser'
 import { loadValidatedConfig } from '../lib/config.js'

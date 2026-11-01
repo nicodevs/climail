@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { cancel, isCancel, password, select, text } from '@clack/prompts'
 import { loadConfig, saveConfig, localConfigPath } from '../lib/config.js'
 import { init } from '../commands/init.js'

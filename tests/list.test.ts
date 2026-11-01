@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { loadValidatedConfig } from '../lib/config.js'
 import { withClient, withMailbox } from '../lib/imap.js'
 import { list } from '../commands/list.js'

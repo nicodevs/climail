@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { readUserConfig, writeUserConfig, write } from 'rc9'
 import { loadValidatedConfig, saveConfig, RC_NAME } from '../lib/config.js'
 import { CONFIG, CONFIG_NO_SMTP } from './support.js'

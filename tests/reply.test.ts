@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import type { AddressObject, ParsedMail } from 'mailparser'
 import { replyAllRecipients, replyMeta, replySubject, replyTarget } from '../lib/reply.js'
 
