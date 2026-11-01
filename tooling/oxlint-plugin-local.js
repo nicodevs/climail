@@ -102,13 +102,21 @@ function checkBody(context, body) {
       continue
     }
 
-    const lineStart = source.getIndexFromLoc({ line: cur.loc.start.line, column: 0 })
+    // On its own line, add a newline at the start of that line. Sharing a line
+    // with the previous statement, split right before it: the line may start
+    // inside a multiline template literal, and a line-start insert would
+    // change the string and never separate the two statements.
+    const sameLine = prev.loc.end.line === cur.loc.start.line
+
+    const at = sameLine
+      ? source.getIndexFromLoc(cur.loc.start)
+      : source.getIndexFromLoc({ line: cur.loc.start.line, column: 0 })
 
     context.report({
       node: cur,
       message: `Expected a blank line ${reason}.`,
       fix(fixer) {
-        return fixer.insertTextBeforeRange([lineStart, lineStart], '\n')
+        return fixer.insertTextBeforeRange([at, at], sameLine ? '\n\n' : '\n')
       },
     })
   }
